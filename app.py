@@ -86,9 +86,6 @@ def get_attraction_id(attractionId):
         return jsonify({"data": attraction_data})
 
     except:
-        # if attractionId not in attraction_data:
-        #     return jsonify({"error": True, "message": "輸入錯誤,無此id編號"}), 400
-        # else:
         return jsonify({"error": True, "message": "伺服器錯誤"}), 500
     finally:
         conn.close()
@@ -118,49 +115,6 @@ def get_mrts():
     finally:
         cursor.close()
         conn.close()
-
-
-#     try:
-#         conn = pool.get_connection()
-#         cursor = conn.cursor(dictionary=True)
-#         page = int(request.args.get("page", ""))
-#         keyword = request.args.get("keyword", "")
-
-#         if keyword == "":
-#             find = "SELECT * FROM travel LIMIT %s,%s"
-#             find_value = (page * 12, 12)
-#             cursor.execute(find, find_value)
-#             search = cursor.fetchall()
-
-#             for i in range(len(search)):
-#                 search[i]["images"] = search[i]["images"].split(" ")
-
-#             data_len = 12
-#             if len(search) < data_len:
-#                 return jsonify({"nextPage": None, "data": search})
-#             else:
-#                 return jsonify({"nextPage": page + 1, "data": search})
-#         else:
-#             find_key = "SELECT * FROM travel WHERE name LIKE %s OR category = %s ORDER BY id LIMIT 12 OFFSET &s"
-#             find_key_value = ("%" + keyword + "%", keyword, page * 12)
-#             cursor.execute(find_key, find_key_value)
-#             search_key = cursor.fetchall()
-#         print(search_key)
-#         print(len(search_key))
-#         for i in range(len(search_key)):
-#             search_key[i]["images"] = search_key[i]["images"].split(" ")
-#             data_len = 12
-
-#         if len(search_key) < data_len:
-#             return jsonify({"nextPage": None, "data": search_key})
-#         else:
-#             return jsonify({"nextPage": page + 1, "data": search_key})
-#     except:
-#         return jsonify({"error": True, "message": "伺服器錯誤"}), 500
-
-#     finally:
-#         conn.close()
-#         cursor.close()
 
 
 if __name__ == "__main__":
