@@ -4,14 +4,9 @@ from dbpool import pool
 import os
 from dotenv import load_dotenv
 
-# mydb_password = os.getenv("db_password")
 
 load_dotenv()
-# 讀取環境變數
-# db_host = os.getenv("DB_HOST")
-# db_user = os.getenv("DB_USER")
-# db_password = os.getenv("DB_PASSWORD")
-# db_name = os.getenv("DB_NAME")
+
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False

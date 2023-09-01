@@ -11,6 +11,8 @@ mydb = {
     "user": "chien",
     "password": mydb_password,
     "database": "mydatabase",
+    # "database": "attractions",
+    # "user": "root",
 }
 
 pool = mysql.connector.pooling.MySQLConnectionPool(
