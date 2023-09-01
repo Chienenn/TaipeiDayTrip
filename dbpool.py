@@ -4,10 +4,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-mydb_password = os.getenv("db_password")
+mydb_password = os.getenv("DB_PASSWORD")
 
 mydb = {
-    "host": "localhost",
+    "host": "%",
     "user": "chien",
     "password": mydb_password,
     "database": "mydatabase",
