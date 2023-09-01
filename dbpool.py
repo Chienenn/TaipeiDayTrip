@@ -8,9 +8,9 @@ mydb_password = os.getenv("db_password")
 
 mydb = {
     "host": "localhost",
-    "user": "root",
+    "user": "chien",
     "password": mydb_password,
-    "database": "attractions",
+    "database": "mydatabase",
 }
 
 pool = mysql.connector.pooling.MySQLConnectionPool(
