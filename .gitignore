@@ -1,1 +1,6 @@
 .env
+.env.local
+__pycache__
+wehelp2-env/
+.DS_Store
+/requirements.txtㄕ
