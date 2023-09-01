@@ -7,7 +7,7 @@ load_dotenv()
 mydb_password = os.getenv("DB_PASSWORD")
 
 mydb = {
-    "host": "%",
+    "host": "localhost",
     "user": "chien",
     "password": mydb_password,
     "database": "mydatabase",
