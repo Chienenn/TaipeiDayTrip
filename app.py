@@ -57,7 +57,7 @@ def get_attractions():
         next_page = page + 1 if len(attractions) == data_len else None
 
         for attraction in attractions:
-            attraction["images"] = attraction["images"].split(" ")
+            attraction["images"] = attraction["images"].split(",")
 
         response_data = {"nextPage": next_page, "data": attractions}
         return jsonify(response_data)
