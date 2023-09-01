@@ -81,7 +81,7 @@ def get_attraction_id(attractionId):
         if not attraction_data:
             return jsonify({"error": True, "message": "輸入錯誤，無此 id 編號"}), 400
 
-        attraction_data["images"] = attraction_data["images"].strip().split(" ")
+        attraction_data["images"] = attraction_data["images"].split(",")
         return jsonify({"data": attraction_data})
 
     except:
