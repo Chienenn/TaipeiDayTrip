@@ -6,17 +6,25 @@
   text-decoration: none;
   font-family: "Noto Sans TC", cursive;
 }
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
 .welcome-img {
-  background: url("../pic/welcome\ image.png");
+  background: url("../pic/welcome.png");
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 74px;
+  margin-top: 54px;
+  width: 100%;
   height: 320px;
-
+  background-repeat: no-repeat;
+  background-position: top center;
   background-size: cover;
   position: relative;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 .titleLeft {
@@ -267,29 +275,21 @@ p {
   font-size: 16px;
   padding-top: 60px;
 }
-
 @media (max-width: 1200px) {
   .nav-bar {
     width: 92%;
     padding: 0 20px;
   }
-  .welcome-img {
-    width: auto;
-  }
+
   .slogan {
     width: 92%;
-    max-width: 1200px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
   }
 
   .list-bar {
     width: 92%;
   }
-
   .row {
-    padding: 0;
+    max-width: 1200px;
   }
 
   .col {
@@ -302,7 +302,7 @@ p {
     justify-content: space-around;
   }
   .attraction-image {
-    width: 510px;
+    width: 522px;
     height: 300px;
   }
   .attraction-name {
@@ -311,104 +311,19 @@ p {
 }
 
 @media (max-width: 600px) {
-  .nav-bar {
-    width: 88%;
-    padding: 0 20px;
-  }
-  .welcome-img {
-    width: 600px;
-  }
-  .slogan {
-    width: 86%;
-    max-width: 1200px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-  }
   .search-bar {
-    width: 350px;
+    width: 85%;
     display: flex;
     flex-wrap: nowrap;
   }
-
-  .mrt-list {
-    max-width: 600px;
-    width: 600px;
-  }
-
-  .list-bar {
-    width: 88%;
-  }
-  .row {
-    max-width: 600px;
-    width: 600px;
-  }
-
-  .col {
-    width: 94%;
-  }
-  .attraction-container {
-    width: 85%;
-  }
-  .attraction {
-    justify-content: space-around;
-  }
-  .attraction-image {
-    width: 510px;
-    height: 349px;
-  }
-  .attraction-name {
-    width: 510px;
-  }
-  #footer-div {
-    width: 600px;
-  }
   #search-btn {
-    width: 85px;
-    height: 46px;
+    width: 70px;
   }
-}
 
-/*
-@media (max-width: 360px) {
-  .nav {
-    width: 360px;
-  }
-  .nav-bar {
-    width: 70%;
-  }
-  .slogan {
-    width: 93%;
-  }
-  .titleLeft {
-    margin-left: 45px;
-  }
-  .titleRight {
-    margin-right: 45px;
-    font-size: 13px;
-  }
-  .search-bar {
-    width: 290px;
-  }
-  .mrt-list {
-    max-width: 360px;
-    width: 350px;
-  }
   .col {
     width: 94%;
   }
-  .row {
-    max-width: 360px;
-    width: 355px;
-  }
-  .attraction-image {
-    width: 350px;
-    height: 300px;
-  }
   .attraction-container {
-    width: 88%;
-  }
-  #footer-div {
-    width: 360px;
+    width: 90%;
   }
 }

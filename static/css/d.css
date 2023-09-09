@@ -1,0 +1,100 @@
+@media (max-width: 1200px) {
+  .nav-bar {
+    width: 92%;
+    padding: 0 20px;
+  }
+  .welcome-img {
+    width: auto;
+  }
+  .slogan {
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+
+  .list-bar {
+    width: 92%;
+  }
+
+  .row {
+    padding: 0;
+  }
+
+  .col {
+    width: 94%;
+  }
+  .attraction-container {
+    width: 45%;
+  }
+  .attraction {
+    justify-content: space-around;
+  }
+  .attraction-image {
+    width: 510px;
+    height: 300px;
+  }
+  .attraction-name {
+    width: 510px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-bar {
+    width: 88%;
+    padding: 0 20px;
+  }
+  .slogan {
+    width: 86%;
+  }
+  .search-bar {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .list-bar {
+    width: 88%;
+  }
+  .col {
+    width: 94%;
+  }
+  .attraction-container {
+    width: 85%;
+  }
+  .attraction {
+    justify-content: space-around;
+  }
+  .attraction-image {
+    width: 510px;
+    height: 349px;
+  }
+  .attraction-name {
+    width: 510px;
+  }
+  #search {
+    width: 260px;
+  }
+
+  #footer-div {
+    width: 600px;
+  }
+}
+
+@media (max-width: 360px) {
+  .titleLeft {
+    font-size: 20px;
+  }
+  .titleRight {
+    font-size: 14px;
+  }
+  .title1 {
+    font-size: 25px;
+  }
+  .title2 {
+    font-size: 14px;
+  }
+  #search {
+    width: 200px;
+  }
+}
