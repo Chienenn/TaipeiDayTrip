@@ -47,8 +47,8 @@ def get_attractions():
             query = "SELECT id, name, category, description, address, mrt, transport, latitude, longitude, images FROM travel LIMIT %s, %s"
             query_params = (page * 12, 12)
         else:
-            query = "SELECT id, name, category, description, address, mrt, transport, latitude, longitude, images FROM travel WHERE name LIKE %s OR category = %s ORDER BY id LIMIT %s OFFSET %s"
-            query_params = (f"%{keyword}%", keyword, 12, page * 12)
+            query = "SELECT id, name, category, description, address, mrt, transport, latitude, longitude, images FROM travel WHERE (name LIKE %s OR category LIKE %s OR mrt = %s) ORDER BY id LIMIT %s OFFSET %s "
+            query_params = (f"%{keyword}%", keyword, keyword, 12, page * 12)
 
         cursor.execute(query, query_params)
         attractions = cursor.fetchall()
