@@ -8,11 +8,12 @@ load_dotenv()
 
 mydb = {
     "host": "localhost",
-    "user": "chien",
-    "password": "Password1-",
-    "database": "mydatabase",
-    # "database": "attractions",
-    # "user": "root",
+    # "user": "chien",
+    # "password": "Password1-",
+    # "database": "mydatabase",
+    "password": "123123",
+    "database": "attractions",
+    "user": "root",
 }
 
 pool = mysql.connector.pooling.MySQLConnectionPool(
