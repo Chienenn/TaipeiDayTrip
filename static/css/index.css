@@ -363,4 +363,8 @@ p {
   #footer-div {
     width: 600px;
   }
+  #search-btn {
+    width: 85px;
+    height: 46px;
+  }
 }
