@@ -368,3 +368,34 @@ p {
     height: 46px;
   }
 }
+@media (max-width: 360px) {
+  .nav {
+    width: 360px;
+  }
+  .nav-bar {
+    width: 70%;
+  }
+  .slogan {
+    width: 93%;
+  }
+  .titleLeft {
+    margin-left: 45px;
+  }
+  .search-bar {
+    width: 290px;
+  }
+  .mrt-list {
+    max-width: 400px;
+    width: 380px;
+  }
+  .col {
+    width: 94%;
+  }
+  .row {
+    max-width: 400px;
+    width: 400px;
+  }
+  #footer-div {
+    width: 440px;
+  }
+}
