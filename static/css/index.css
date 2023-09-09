@@ -368,6 +368,8 @@ p {
     height: 46px;
   }
 }
+
+/*
 @media (max-width: 360px) {
   .nav {
     width: 360px;
@@ -381,21 +383,32 @@ p {
   .titleLeft {
     margin-left: 45px;
   }
+  .titleRight {
+    margin-right: 45px;
+    font-size: 13px;
+  }
   .search-bar {
     width: 290px;
   }
   .mrt-list {
-    max-width: 400px;
-    width: 380px;
+    max-width: 360px;
+    width: 350px;
   }
   .col {
     width: 94%;
   }
   .row {
-    max-width: 400px;
-    width: 400px;
+    max-width: 360px;
+    width: 355px;
+  }
+  .attraction-image {
+    width: 350px;
+    height: 300px;
+  }
+  .attraction-container {
+    width: 88%;
   }
   #footer-div {
-    width: 440px;
+    width: 360px;
   }
 }
