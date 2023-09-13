@@ -38,6 +38,8 @@ body {
   color: #448899;
   margin-top: 10px;
   margin-bottom: 10px;
+  background: none;
+  border: none;
 }
 
 .nav {
@@ -79,6 +81,7 @@ body {
   height: auto;
   display: block;
   background-color: transparent;
+  cursor: default;
 }
 
 .title1 {
@@ -114,7 +117,13 @@ a {
   color: #666666;
   text-decoration: none;
 }
-
+.attraction-link {
+  border: 2px solid #e8e8e8;
+  border-radius: 6px 6px 6px 6px;
+  overflow: hidden;
+  margin-top: 40px;
+  width: 22%;
+}
 #search {
   width: 390px;
   height: 46px;
@@ -199,11 +208,17 @@ a {
   padding: 5px 15px 5px 15px;
   margin-left: -30px;
   margin-right: 14px;
+  cursor: default;
 }
 
 p {
   margin-left: 30px;
   font-size: 16px;
+}
+
+p:hover {
+  font-weight: 1000;
+  color: #393737;
 }
 
 .row {
@@ -223,14 +238,18 @@ p {
   width: 1225px;
 }
 
-.attraction-container {
+/* .attraction-container {
   border: 2px solid #e8e8e8;
   border-radius: 6px 6px 6px 6px;
   overflow: hidden;
   margin-top: 40px;
   width: 22%;
+} */
+.attraction-image:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
+  cursor: default;
 }
-
 .attraction-name {
   text-align: start;
   font-size: 16px;
@@ -249,6 +268,7 @@ p {
   height: 246px;
   vertical-align: bottom;
   border-radius: 6px 6px 0px 0px;
+  transition: opacity 0.3s;
 }
 .attraction-info {
   text-align: start;
@@ -295,8 +315,8 @@ p {
   .col {
     width: 94%;
   }
-  .attraction-container {
-    width: 45%;
+  .attraction-link {
+    width: 43%;
   }
   .attraction {
     justify-content: space-around;
@@ -324,6 +344,9 @@ p {
     width: 94%;
   }
   .attraction-container {
+    width: 90%;
+  }
+  .attraction-link {
     width: 90%;
   }
 }

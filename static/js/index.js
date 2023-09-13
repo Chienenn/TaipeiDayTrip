@@ -48,10 +48,11 @@ rightBtn.addEventListener("click", () => {
 ////
 let nextPage = 0; // 初始頁碼
 let isLoading = false;
-const attractionsContainer = document.getElementById("attractions"); // 獲取景點容器
+const attractionsContainer = document.getElementById("attractions");
 const attractionsPerPage = 12;
 let keyword = "";
 let selectedMRT = "";
+let attractionID = 10;
 
 function loadNextPage() {
   if (isLoading || nextPage === null) {
@@ -70,6 +71,13 @@ function loadNextPage() {
           if (index < attractionsPerPage) {
             const attractionContainer = document.createElement("div");
             attractionContainer.classList.add("attraction-container");
+
+            let attractionID = attraction.id;
+
+            // 超連結
+            const attractionLink = document.createElement("a");
+            attractionLink.href = `/attraction/${attractionID}`;
+            attractionLink.classList.add("attraction-link");
 
             const image = document.createElement("img");
             const images = attraction.images;
@@ -99,7 +107,11 @@ function loadNextPage() {
             infoContainer.appendChild(cat);
             attractionContainer.appendChild(infoContainer);
 
-            attractionsContainer.appendChild(attractionContainer);
+            // attractionContainer.appendChild(attractionLink);
+
+            // attractionsContainer.appendChild(attractionContainer);
+            attractionsContainer.appendChild(attractionLink);
+            attractionLink.appendChild(attractionContainer);
           }
         });
 
