@@ -83,6 +83,7 @@ fetch(`/api/attraction/${attractionId}`)
     attractionImages.forEach((imageUrl, index) => {
       const imageElement = document.createElement("img");
       const imgContainer = document.querySelector(".img-container");
+      const img1 = document.querySelector(".img1");
       imageElement.src = imageUrl;
       imageElement.classList.add("attraction-images");
 
@@ -94,7 +95,7 @@ fetch(`/api/attraction/${attractionId}`)
         imageElement.style.opacity = 0;
       }
 
-      imgContainer.appendChild(imageElement);
+      img1.appendChild(imageElement);
     });
 
     prevButton.addEventListener("click", prevImage);

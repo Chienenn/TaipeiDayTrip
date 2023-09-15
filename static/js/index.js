@@ -107,15 +107,12 @@ function loadNextPage() {
             infoContainer.appendChild(cat);
             attractionContainer.appendChild(infoContainer);
 
-            // attractionContainer.appendChild(attractionLink);
-
-            // attractionsContainer.appendChild(attractionContainer);
             attractionsContainer.appendChild(attractionLink);
             attractionLink.appendChild(attractionContainer);
           }
         });
 
-        nextPage = data.nextPage; // 更新下一頁
+        nextPage = data.nextPage; // next page
         console.log("in function", nextPage);
         if (nextPage === null && attractionsContainer.children.length === 0) {
           const noResultsMessage = document.createElement("h3");
@@ -144,13 +141,6 @@ function checkScroll() {
     console.log(nextPage);
 
     loadNextPage();
-    console.log("window.innerHeight:", window.innerHeight);
-    console.log("window.scrollY:", window.scrollY);
-    console.log("document.body.offsetHeight:", document.body.offsetHeight);
-    console.log(
-      "Threshold for triggering scroll load:",
-      document.body.offsetHeight - 100
-    );
   }
 }
 
@@ -158,7 +148,7 @@ window.addEventListener("scroll", checkScroll);
 
 loadNextPage();
 
-////搜尋
+////search
 const searchBtn = document.getElementById("search-btn");
 const searchInput = document.getElementById("search");
 
