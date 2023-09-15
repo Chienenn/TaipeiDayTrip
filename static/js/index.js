@@ -48,10 +48,11 @@ rightBtn.addEventListener("click", () => {
 ////
 let nextPage = 0; // 初始頁碼
 let isLoading = false;
-const attractionsContainer = document.getElementById("attractions"); // 獲取景點容器
+const attractionsContainer = document.getElementById("attractions");
 const attractionsPerPage = 12;
 let keyword = "";
 let selectedMRT = "";
+let attractionID = 10;
 
 function loadNextPage() {
   if (isLoading || nextPage === null) {
@@ -70,6 +71,13 @@ function loadNextPage() {
           if (index < attractionsPerPage) {
             const attractionContainer = document.createElement("div");
             attractionContainer.classList.add("attraction-container");
+
+            let attractionID = attraction.id;
+
+            // 超連結
+            const attractionLink = document.createElement("a");
+            attractionLink.href = `/attraction/${attractionID}`;
+            attractionLink.classList.add("attraction-link");
 
             const image = document.createElement("img");
             const images = attraction.images;
@@ -99,11 +107,12 @@ function loadNextPage() {
             infoContainer.appendChild(cat);
             attractionContainer.appendChild(infoContainer);
 
-            attractionsContainer.appendChild(attractionContainer);
+            attractionsContainer.appendChild(attractionLink);
+            attractionLink.appendChild(attractionContainer);
           }
         });
 
-        nextPage = data.nextPage; // 更新下一頁
+        nextPage = data.nextPage; // next page
         console.log("in function", nextPage);
         if (nextPage === null && attractionsContainer.children.length === 0) {
           const noResultsMessage = document.createElement("h3");
@@ -132,13 +141,6 @@ function checkScroll() {
     console.log(nextPage);
 
     loadNextPage();
-    console.log("window.innerHeight:", window.innerHeight);
-    console.log("window.scrollY:", window.scrollY);
-    console.log("document.body.offsetHeight:", document.body.offsetHeight);
-    console.log(
-      "Threshold for triggering scroll load:",
-      document.body.offsetHeight - 100
-    );
   }
 }
 
@@ -146,7 +148,7 @@ window.addEventListener("scroll", checkScroll);
 
 loadNextPage();
 
-////搜尋
+////search
 const searchBtn = document.getElementById("search-btn");
 const searchInput = document.getElementById("search");
 
