@@ -108,7 +108,7 @@ signup.addEventListener('click', (event) => {
   const name = document.querySelector('#name').value;
   const email = document.querySelector('#email').value;
   const password = document.querySelector('#password').value;
-  const request_entry = {
+  const signupInfo = {
     name: name,
     email: email,
     password: password,
@@ -122,7 +122,7 @@ signup.addEventListener('click', (event) => {
   fetch(`/api/user`, {
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify(request_entry),
+    body: JSON.stringify(signupInfo),
     cache: 'no-cache',
     headers: new Headers({
       'content-type': 'application/json',
@@ -149,14 +149,14 @@ const logIn = document.querySelector('.login-btn');
 logIn.addEventListener('click', (event) => {
   const email = document.querySelector('#email-login').value;
   const password = document.querySelector('#password-login').value;
-  const request_entry = {
+  const loginInfo = {
     email: email,
     password: password,
   };
   fetch(`/api/user/auth`, {
     method: 'PUT',
     credentials: 'include',
-    body: JSON.stringify(request_entry),
+    body: JSON.stringify(loginInfo),
     cache: 'no-cache',
     headers: new Headers({
       'content-type': 'application/json',

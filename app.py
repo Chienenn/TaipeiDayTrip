@@ -196,11 +196,11 @@ def auth():
                 return jsonify({"error": True, "message": "帳號或密碼不可為空"}),400
         
             cursor.execute('SELECT * FROM member WHERE email = %s AND password = %s' , (email,password))
-            check_email = cursor.fetchall()
+            checking = cursor.fetchall()
 
-            if len(check_email) > 0:
-                name = check_email[0]['name']
-                user_id = check_email[0]['id']
+            if len(checking) > 0:
+                name = checking[0]['name']
+                user_id = checking[0]['id']
                 user_info = {"data": {'id':user_id,'name':name,'email':email}}
 
                 # token = create_jwt_token(user_info)
