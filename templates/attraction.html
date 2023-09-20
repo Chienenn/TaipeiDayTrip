@@ -12,14 +12,49 @@
     <header>
     <div class="nav">
       <div class="nav-bar">
-      <button class="titleLeft" onclick="window.location.href='http://3.106.73.167:3000/'">台北一日遊</button>
+      <button class="titleLeft" onclick="window.location.href='http://127.0.0.1:3000/'">台北一日遊</button>
       <div class="titleRight">
         <div class="item"><a href="#" class="btn">預定行程 &nbsp;&nbsp;&nbsp; </a></div>
-        <div class="item"><a href="#" class="btn">登入/註冊</a></div>
+        <button class="login" id="login-signup" >登入 / 註冊</button>
       </div>
       </div>
       </div>  
     </div>
+
+    <div class="dialog-mask" style="display:none;">
+        <div class="dialog-signup" style="display:none;">
+          <div class="decorator-bar"></div>
+          <div class="dialog-signup-main">
+            <txt class="dialog-title">
+              註冊會員帳號
+            </txt>
+            <img class="icon-signup-close" src="../static/pic/icon_close.png"/>
+            <input class="dialog-input" id="name" type="text" name="name" placeholder="輸入姓名" required/>
+            <input class="dialog-input" id="email" type="text" name="email" placeholder="輸入電子郵件" required/>
+            <input class="dialog-input" id="password" type="password" name="password" placeholder="輸入密碼" required/>
+            <button class="signup-btn">註冊帳戶</button>
+            <txt class="notice-signup"></txt>
+            <txt class="notice-alert"></txt>
+            <button class="switch-login">已經有帳戶了？點此登入</button>
+          </div>
+        </div>
+  
+        <div class="dialog-login">
+          <div class="decorator-bar"></div>
+          <div class="dialog-login-main">
+            <txt class="dialog-title">
+                登入會員帳號
+            </txt>
+            <img class="icon-login-close" src="../static/pic/icon_close.png"/>
+            <input class="dialog-input" id="email-login" type="text" name="email" placeholder="輸入電子郵件" required/>
+            <input class="dialog-input" id="password-login" type="password" name="password" placeholder="輸入密碼" required/>
+            <button class="login-btn">登入帳戶</button>
+            <txt class="notice-login"></txt>
+            <button class="switch-signup">還沒有帳戶？點此註冊</button>
+        </div>
+        </div>
+    
+      </div> <!--background-->
 </header>
 <main>
 <div class="main-attraction">
