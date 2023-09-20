@@ -30,8 +30,6 @@ body {
 .titleLeft {
   justify-content: flex-start;
   text-align: center;
-  font-family: 'Noto Sans TC';
-  font-style: normal;
   font-weight: 700;
   font-size: 34px;
   line-height: 34px;
@@ -85,8 +83,6 @@ body {
 }
 
 .title1 {
-  font-family: 'Noto Sans TC';
-  font-style: normal;
   font-weight: 700;
   font-size: 28px;
   line-height: 15px;
@@ -94,8 +90,6 @@ body {
 }
 
 .title2 {
-  font-family: 'Noto Sans TC';
-  font-style: normal;
   font-weight: 700;
   font-size: 16px;
   color: #f8f8f8;
