@@ -1,9 +1,10 @@
 from flask import jsonify, render_template, Flask, request
 import json
+import jwt
 from dbpool import pool
 import os
 from dotenv import load_dotenv
-
+from datetime import datetime, timedelta
 
 load_dotenv()
 
@@ -12,6 +13,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+secret_key = "secret_key"
 
 
 # Pages
@@ -114,6 +116,115 @@ def get_mrts():
     finally:
         cursor.close()
         conn.close()
+
+
+# Register
+
+@app.route("/api/user", methods=["POST"])
+def register():
+    try:
+        conn = pool.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        user = request.get_json()
+        name = user["name"]
+        email = user["email"]
+        password = user["password"]
+
+        if not name.strip() or not email.strip() or not password.strip():
+            return jsonify({"message": "註冊失敗：欄位不可為空白！"}), 400
+
+        if len(password) < 5 :
+            return jsonify({"message": "註冊失敗：密碼需有 5 位數以上"}), 400
+
+        cursor.execute("SELECT * FROM member WHERE email=%s", (email,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            return jsonify({"message": "註冊失敗：該 Email 已被註冊！"}), 400
+
+        cursor.execute(
+            "INSERT INTO member (name,email,password) VALUES (%s, %s , %s)",
+            (name, email, password),
+        )
+        conn.commit()
+        return jsonify({"ok": True}), 200
+
+    except:
+        return jsonify({"error": True, "message": "伺服器錯誤"}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# auth
+
+def verify_token():
+    cookie_token = request.cookies.get('token')
+    if not cookie_token:
+        return None
+    
+    try:
+        payload=jwt.decode(cookie_token,secret_key,algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.InvalidTokenError:
+        return None
+
+@app.route("/api/user/auth", methods=["PUT","GET","DELETE"])
+def auth():
+    try:
+        conn = pool.get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        if request.method == "GET":
+            cookie_token=request.cookies.get('token')
+            if cookie_token:
+                decoded = verify_token()
+                if decoded:
+                    return jsonify(decoded)
+                
+            return jsonify({"data":None})
+        
+        elif request.method == "PUT":
+            user = request.get_json()
+            email = user.get("email")
+            password = user.get("password")
+
+            if not email or not password:
+                return jsonify({"error": True, "message": "帳號或密碼不可為空"}),400
+        
+            cursor.execute('SELECT * FROM member WHERE email = %s AND password = %s' , (email,password))
+            checking = cursor.fetchall()
+
+            if len(checking) > 0:
+                name = checking[0]['name']
+                user_id = checking[0]['id']
+                user_info = {"data": {'id':user_id,'name':name,'email':email}}
+
+                # token = create_jwt_token(user_info)
+                token=jwt.encode(user_info,secret_key,algorithm='HS256')
+                print(token)
+                response = jsonify({'token':token,'ok':True})
+                response.set_cookie('token',token,max_age = 7 *24 * 60 * 60, httponly = True )
+                return response
+            else:
+                return jsonify ({'error':True,'message':'帳號密碼輸入錯誤！'}),400
+
+        
+        elif request.method == "DELETE":
+            response = jsonify({'ok':True})
+            response.set_cookie("token","",max_age = -1)
+            return response
+    except:
+        return jsonify({"error":True,"message":"伺服器錯誤"}),500
+    
+    finally:
+        conn.close()
+        cursor.close()
+    
+
 
 
 if __name__ == "__main__":
