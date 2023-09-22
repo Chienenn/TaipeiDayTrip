@@ -156,38 +156,25 @@ def register():
         cursor.close()
         conn.close()
 
-
-# auth
-
-def verify_token():
-    cookie_token = request.cookies.get('token')
-    if not cookie_token:
-        return None
     
-    try:
-        payload=jwt.decode(cookie_token,secret_key,algorithms=['HS256'])
-        return payload
-    except jwt.ExpiredSignatureError:
-        return None
-    except jwt.InvalidTokenError:
-        return None
-
 @app.route("/api/user/auth", methods=["PUT","GET","DELETE"])
 def auth():
     try:
         conn = pool.get_connection()
         cursor = conn.cursor(dictionary=True)
-
         if request.method == "GET":
-            cookie_token=request.cookies.get('token')
-            if cookie_token:
-                decoded = verify_token()
-                if decoded:
-                    return jsonify(decoded)
-                
-            return jsonify({"data":None})
+            authorization_header = request.headers.get('Authorization')
+            # print(authorization_header)
+            if authorization_header:
+                    try:
+                        token = authorization_header.split("Bearer ")[1]
+                        data = jwt.decode(token, secret_key, algorithms=['HS256'])
+                        return jsonify({'data':data})
+                    except:
+                        return jsonify({data:None})
         
         elif request.method == "PUT":
+            
             user = request.get_json()
             email = user.get("email")
             password = user.get("password")
@@ -203,11 +190,12 @@ def auth():
                 user_id = checking[0]['id']
                 user_info = {"data": {'id':user_id,'name':name,'email':email}}
 
-                # token = create_jwt_token(user_info)
+                expiration_time = datetime.utcnow() + timedelta(days=7)
+                user_info["exp"] = expiration_time
+
                 token=jwt.encode(user_info,secret_key,algorithm='HS256')
                 print(token)
                 response = jsonify({'token':token,'ok':True})
-                response.set_cookie('token',token,max_age = 7 *24 * 60 * 60, httponly = True )
                 return response
             else:
                 return jsonify ({'error':True,'message':'帳號密碼輸入錯誤！'}),400
@@ -215,7 +203,6 @@ def auth():
         
         elif request.method == "DELETE":
             response = jsonify({'ok':True})
-            response.set_cookie("token","",max_age = -1)
             return response
     except:
         return jsonify({"error":True,"message":"伺服器錯誤"}),500
@@ -223,8 +210,7 @@ def auth():
     finally:
         conn.close()
         cursor.close()
-    
-
+     
 
 
 if __name__ == "__main__":

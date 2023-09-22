@@ -159,7 +159,7 @@ logIn.addEventListener('click', (event) => {
     body: JSON.stringify(loginInfo),
     cache: 'no-cache',
     headers: new Headers({
-      'content-type': 'application/json',
+      'Content-Type': 'application/json',
     }),
   })
     .then(function (response) {
@@ -173,25 +173,34 @@ logIn.addEventListener('click', (event) => {
         let notice = document.querySelector('.notice-login');
         notice.textContent = data.message;
       }
+    })
+    .catch(function (error) {
+      console.error('Login request error:', error);
     });
 });
 
-window.addEventListener('load', function () {
-  fetch(`/api/user/auth`, {
-    method: 'GET',
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      if (data.data !== null) {
-        let button = document.querySelector('#login-signup');
-        button.innerHTML = '登出系統';
-      } else {
-        return;
-      }
+(function auth_user() {
+  if (localStorage.getItem('token')) {
+    let token = localStorage.getItem('token');
+    console.log('token', token);
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     });
-});
+
+    fetch(`/api/user/auth`, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data['data'] != null) {
+          let button = document.querySelector('#login-signup');
+          button.innerHTML = '登出系統';
+        }
+      });
+  }
+})();
 
 /// mrt scroll...
 const mrtScrollContainer = document.querySelector('.mrt-scroll-container');
@@ -315,19 +324,13 @@ loadNextPage();
 const searchBtn = document.getElementById('search-btn');
 const searchInput = document.getElementById('search');
 
-searchBtn
-  .addEventListener('click', () => {
-    if (isLoading) {
-      return;
-    }
+searchBtn.addEventListener('click', () => {
+  if (isLoading) {
+    return;
+  }
 
-    keyword = searchInput.value.trim();
-    attractionsContainer.innerHTML = '';
-    nextPage = 0;
-    loadNextPage();
-  })
-
-  .catch((error) => {
-    isLoading = false;
-    console.error('發生錯誤:', error);
-  });
+  keyword = searchInput.value.trim();
+  attractionsContainer.innerHTML = '';
+  nextPage = 0;
+  loadNextPage();
+});

@@ -287,13 +287,14 @@ logIn.addEventListener('click', (event) => {
     email: email,
     password: password,
   };
+
   fetch(`/api/user/auth`, {
     method: 'PUT',
     credentials: 'include',
     body: JSON.stringify(logInInfo),
     cache: 'no-cache',
     headers: new Headers({
-      'content-type': 'application/json',
+      'Content-Type': 'application/json',
     }),
   })
     .then(function (response) {
@@ -303,27 +304,35 @@ logIn.addEventListener('click', (event) => {
       if (data.ok === true) {
         localStorage.setItem('token', data.token);
         location.reload();
-        console.log(data);
       } else {
         let notice = document.querySelector('.notice-login');
         notice.textContent = data.message;
       }
+    })
+    .catch(function (error) {
+      console.error('Login request error:', error);
     });
 });
 
-window.addEventListener('load', function () {
-  fetch(`/api/user/auth`, {
-    method: 'GET',
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      if (data.data !== null) {
-        let button = document.querySelector('#login-signup');
-        button.innerHTML = '登出系統';
-      } else {
-        return;
-      }
+(function auth_user() {
+  if (localStorage.getItem('token')) {
+    let token = localStorage.getItem('token');
+    console.log('token', token);
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     });
-});
+
+    fetch(`/api/user/auth`, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data['data'] != null) {
+          let button = document.querySelector('#login-signup');
+          button.innerHTML = '登出系統';
+        }
+      });
+  }
+})();
