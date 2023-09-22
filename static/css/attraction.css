@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: "Noto Sans TC", cursive;
+  font-family: 'Noto Sans TC', cursive;
 }
 body {
   overflow-y: scroll;
@@ -14,8 +14,6 @@ body {
 .titleLeft {
   justify-content: flex-start;
   text-align: center;
-  font-family: "Noto Sans TC";
-  font-style: normal;
   font-weight: 700;
   font-size: 34px;
   line-height: 34px;
@@ -92,9 +90,9 @@ a {
   border-radius: 6px 6px 6px 6px;
 }
 
-input[type="date"] {
+input[type='date'] {
   width: 193px;
-  height: 35px; /* 調整寬度，根據您的需求設置 */
+  height: 35px;
 }
 
 .attraction-info22 {
@@ -163,11 +161,11 @@ input[type="date"] {
 }
 
 #left-btn:hover {
-  background-image: url("../pic/leftArr_hover.png");
+  background-image: url('../pic/leftArr_hover.png');
 }
 
 #right-btn:hover {
-  background-image: url("../pic/rightArr_hover.png");
+  background-image: url('../pic/rightArr_hover.png');
 }
 #left-btn,
 #right-btn {
@@ -285,6 +283,178 @@ dot:hover {
   height: 10px;
   transition: opacity 0.8s;
   vertical-align: baseline;
+}
+.dialog-mask {
+  background-color: rgb(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-signup {
+  background-color: #ffffff;
+  width: 340px;
+  height: 380px;
+  border-radius: 6px;
+  margin-top: 80px;
+  overflow: hidden;
+  box-shadow: 0px 4px 60px #aaa;
+  flex-wrap: wrap;
+}
+.dialog-signup-main {
+  background-color: #ffffff;
+  width: 340px;
+  border-radius: 6px;
+  margin-top: -60px;
+  overflow: hidden;
+  position: relative;
+}
+
+.dialog-login-main {
+  background-color: #ffffff;
+  width: 340px;
+  height: 290px;
+  border-radius: 6px;
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.decorator-bar {
+  background: linear-gradient(270deg, #378 0%, #6ab 100%);
+  height: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.icon-signup-close {
+  cursor: default;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+.notice-alert {
+  color: #337788;
+  /* margin-left: 60px; */
+  font-weight: 700;
+  display: flex;
+  left: 48%;
+  transform: translateX(-30px);
+  position: absolute;
+}
+
+.icon-login-close {
+  cursor: default;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+.dialog-login {
+  background-color: #ffffff;
+  box-shadow: 0px 4px 60px #aaa;
+  width: 340px;
+  height: 310px;
+  border-radius: 6px;
+  margin-top: 80px;
+  overflow: hidden;
+}
+
+.dialog-input {
+  height: 47px;
+  width: 282px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 15px;
+  margin-bottom: 10px;
+  margin-left: 21.5px;
+  font-size: 16px;
+}
+
+.signup {
+  background: #448899;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 19px;
+  color: #ffffff;
+  width: 100%;
+  border: none;
+  height: 47px;
+}
+.dialog-title {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #666666;
+  height: 27px;
+  /* width: 100%; */
+  margin-bottom: 10px;
+  position: relative;
+  /* padding-left: 41px; */
+  display: flex;
+  justify-content: center;
+}
+.login-btn,
+.signup-btn {
+  width: 300px;
+  height: 47px;
+  background-color: #448899;
+  border-radius: 5px;
+  color: #ffffff;
+  border: none;
+  font-size: 19px;
+  margin-left: 21.5px;
+  margin-bottom: 15px;
+}
+
+.switch-login {
+  border: none;
+  font-size: 16px;
+  color: #666666;
+  background-color: #ffffff;
+  margin-top: 12px;
+  position: absolute;
+  left: 45%;
+  top: 80%;
+  margin-top: 28px;
+  transform: translateX(-70px);
+}
+.login {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #666666;
+}
+
+.notice-login {
+  color: #337788;
+  font-weight: 700;
+  position: absolute;
+  left: 30%;
+  top: 75%;
+}
+.notice-signup {
+  color: #337788;
+  /* margin-left: 60px; */
+  font-weight: 700;
+  display: flex;
+  left: 30%;
+  transform: translateX(-30px);
+  position: absolute;
+}
+.switch-signup {
+  border: none;
+  font-size: 16px;
+  color: #666666;
+  background-color: #ffffff;
+  position: absolute;
+  left: 47%;
+  top: 79%;
+  margin-top: 19px;
+  transform: translateX(-70px);
 }
 
 .attraction-description {

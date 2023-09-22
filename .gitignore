@@ -4,3 +4,7 @@ __pycache__
 wehelp2-env/
 .DS_Store
 /requirements.txt
+.prettierrc
+package-lock.json
+package.json
+node_modules
