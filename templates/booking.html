@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taipei Trip 台北一日遊</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/booking.css">
+    <style>@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap);</style>
+  </head>
+  
+  <body>
+    <header>
+    <div class="nav">
+      <div class="nav-bar">
+      <button class="titleLeft" onclick="window.location.href='http://3.106.73.167:3000/'">台北一日遊</button>
+      <div class="titleRight">
+        <button class="reservation" id="reserve-btn">預定行程 &nbsp;&nbsp;&nbsp;</button>
+        <button class="login" id="login-signup" >登入 / 註冊</button>
+      </div>
+      </div>
+      </div>  
+    </div>
+
+    <div class="dialog-mask" style="display:none;">
+        <div class="dialog-signup" style="display:none;">
+  
+        <div class="dialog-login">
+          <div class="decorator-bar"></div>
+          <div class="dialog-login-main">
+            <txt class="dialog-title">
+                登入會員帳號
+            </txt>
+            <img class="icon-login-close" src="../static/pic/icon_close.png"/>
+            <input class="dialog-input" id="email-login" type="text" name="email" placeholder="輸入電子郵件" required/>
+            <input class="dialog-input" id="password-login" type="password" name="password" placeholder="輸入密碼" required/>
+            <button class="login-btn">登入帳戶</button>
+            <txt class="notice-login"></txt>
+            <button class="switch-signup">還沒有帳戶？點此註冊</button>
+        </div>
+        </div>
+      </div> <!--background-->
+</header>
+<main>
+    <div class="main-page">
+    <div class="content">
+        <div class="con">
+        <div class="reserve-title">
+            <txt class="headline">您好，&nbsp;<txt class="name"></txt>，待預定的行程如下：</txt>
+        </div>
+        <div class="section">
+            <img class="img" alt="img">
+            <div class="trip-info">
+                <img class="icon_delete" src="../static/pic/icon_delete.png"/>
+                <txt class="title0">台北一日遊：<txt class="title"></txt></txt>
+            </br>
+                <txt class="date0">日期：<txt class="date"></txt></txt>
+            </br>
+                <txt class="time0">時間：<txt class="time"></txt></txt>
+            </br>
+                <txt class="price0"><txt class="price"></txt></txt>
+            </br>
+                <txt class="address">地點：</txt>
+            </div>
+            <div class="info">
+            </div>
+        </div>
+    </div>
+    
+    <div class="solid"></div>
+
+    <div class="member-info">
+        <txt class="info-title">您的聯絡資訊</txt>
+    </br>
+        <txt class="info-name">聯絡姓名：<input class="dialog-input" id="name2" type="text" name="name" placeholder="輸入姓名" required/></txt>
+    </br>
+        <txt class="info-mail">聯絡信箱：<input class="dialog-input" id="mail" type="text" name="mail" placeholder="輸入信箱" required/></txt>
+    </br>
+        <txt class="info-phone">手機號碼：<input class="dialog-input" id="phone" type="text" name="phone" placeholder="輸入手機號碼" required/></txt>
+    </br>
+        <txt class="info-txt">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</txt>
+    </div>
+
+    <div class="solid1"></div>
+    <div class="credit-info">
+        <txt class="credit-title">信用卡付款資訊</txt>
+    </br>
+        <txt class="credit-num">卡片號碼：<input class="dialog-input" type="text" placeholder="**** **** **** ****" required/></txt>
+    </br>
+        <txt class="credit-num">過期時間：<input class="dialog-input" type="text"  placeholder="MM / YY" required/></txt>
+    </br>
+        <txt class="credit-num">驗證密碼：<input class="dialog-input" type="text"  placeholder="CVV" required/></txt>
+    </div>
+    <div class="solid2"></div>
+
+    <div class="confirm">
+        <txt class="total-price">總價：</txt>   
+        <button class="confirm-btn">確認訂購並付款</button> 
+    </div>
+    
+    <div class="empty"></div>
+</div>
+</div>
+</main>
+<footer id="footer">
+    <div id="footer-div">COPYRIGHT © 2023 台北一日遊</div>
+</footer>
+<script src="../static/js/booking.js"></script>
+  </body>
+</html>
+
+

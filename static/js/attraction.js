@@ -336,3 +336,74 @@ logIn.addEventListener('click', (event) => {
       });
   }
 })();
+
+function dateWarning(message) {
+  const dateNotice = document.querySelector('.date-notice');
+  dateNotice.style.display = 'block';
+  dateNotice.textContent = message;
+}
+
+function bookingButtonClick() {
+  const id = attractionId;
+  const date = document.getElementById('chooseDate').value;
+  const customDateInput = new Date(date);
+  const today = new Date();
+  let token = localStorage.getItem('token');
+
+  if (isNaN(customDateInput) || customDateInput < today) {
+    dateWarning('請選擇今天或之後的日期！');
+    return;
+  }
+
+  const money = parseInt(
+    document.querySelector('.fee-count').textContent.match(/\d+/)[0]
+  );
+  const time = money === 2000 ? 'morning' : 'afternoon';
+
+  const requestEntry = {
+    attractionId: id,
+    date: date,
+    time: time,
+    price: money,
+  };
+
+  fetch('/api/booking', {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(requestEntry),
+    cache: 'no-cache',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      if (data.ok) {
+        window.location.href = '/booking';
+      }
+    });
+}
+const bookingBtn = document.querySelector('.reserve-btn');
+bookingBtn.addEventListener('click', bookingButtonClick);
+
+//預定行程按鈕
+function bookTicket() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    document.querySelector('.dialog-mask').style.display = 'flex';
+  }
+}
+//右上預定行程
+const reservation = document.querySelector('.reservation');
+reservation.addEventListener('click', () => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    window.location.href = '/booking';
+  } else {
+    document.querySelector('.dialog-mask').style.display = 'flex';
+  }
+});

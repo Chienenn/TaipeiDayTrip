@@ -14,7 +14,7 @@
       <div class="nav-bar">
       <button class="titleLeft" onclick="window.location.href='http://3.106.73.167:3000/'">台北一日遊</button>
       <div class="titleRight">
-        <div class="item"><a href="#" class="btn">預定行程 &nbsp;&nbsp;&nbsp; </a></div>
+        <button class="reservation" id="reserve-btn">預定行程 &nbsp;&nbsp;&nbsp;</button>
         <button class="login" id="login-signup" >登入 / 註冊</button>
       </div>
       </div>
@@ -76,7 +76,8 @@
         </br>
         <div class="title2">以此景點為中心的一日行程，帶您探索城市角落故事</div>
         </br>
-        <div class="date">選擇日期：<input type="date" placeholder="yyyy/mm/dd""/></div>
+        <div class="date">選擇日期：<input type="date" id="chooseDate" placeholder="yyyy/mm/dd""/><txt class = "date-notice" style="display: none;"></txt>  </div>
+        
         </br>
         <div class="time">選擇時間： <label class="time-container"
             ><input
@@ -100,7 +101,7 @@
             <span class="fee-count"></span>
           </div>
         </br>
-          <div><button class="reserve-btn">開始預約行程</button></div>
+          <div><button onclick="bookTicket()" class="reserve-btn" >開始預約行程</button></div>
         </div>
         </div></div>
         
