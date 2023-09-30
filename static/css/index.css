@@ -102,7 +102,9 @@ body {
   height: 46px;
   width: 460px;
 }
-
+.date-notice {
+  font-size: 20px;
+}
 .item {
   color: #666666;
   text-decoration: none;
@@ -191,7 +193,7 @@ a {
   font-size: 16px;
   color: #666666;
 }
-.btn {
+.reservation {
   background: none;
   border: none;
   font-size: 16px;

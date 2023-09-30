@@ -1,4 +1,4 @@
-from flask import jsonify, render_template, Flask, request
+from flask import jsonify, render_template, Flask, request,redirect
 import json
 import jwt
 from dbpool import pool
@@ -166,12 +166,12 @@ def auth():
             authorization_header = request.headers.get('Authorization')
             # print(authorization_header)
             if authorization_header:
-                    try:
-                        token = authorization_header.split("Bearer ")[1]
-                        data = jwt.decode(token, secret_key, algorithms=['HS256'])
-                        return jsonify({'data':data})
-                    except:
-                        return jsonify({data:None})
+                token = authorization_header.split("Bearer ")[1]
+                data = jwt.decode(token, secret_key, algorithms=['HS256'])
+
+                return jsonify({'data':data})
+            else:
+                return jsonify({"data":None})
         
         elif request.method == "PUT":
             
@@ -198,7 +198,7 @@ def auth():
                 response = jsonify({'token':token,'ok':True})
                 return response
             else:
-                return jsonify ({'error':True,'message':'帳號密碼輸入錯誤！'}),400
+                return jsonify ({'error':True,'message':'帳號或密碼輸入錯誤！'}),400
 
         
         elif request.method == "DELETE":
@@ -210,6 +210,117 @@ def auth():
     finally:
         conn.close()
         cursor.close()
+
+# Booking 
+
+@app.route("/api/booking" , methods=["GET","POST","DELETE"])
+def resveration():
+    try:
+        conn = pool.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        auth_header = request.headers.get('Authorization')
+        # print("booking,",auth_header)
+
+        if request.method == "GET":
+            if auth_header:
+                try:
+                    token = auth_header.split("Bearer ")[1]
+                    data = jwt.decode(token, secret_key, algorithms=['HS256'])
+                    user_id = data["data"]["id"]
+                except:
+                    return jsonify({"error":"令牌失效"}),403
+
+                cursor.execute("SELECT id FROM member WHERE id = %s" , (user_id,))
+                member_id = cursor.fetchone()["id"]
+
+                cursor.execute("SELECT attractionID,date,time,price FROM reservation WHERE memberID=%s",(member_id,))
+                reservation = cursor.fetchone()
+
+                if reservation is not None :
+                    attraction_id = reservation["attractionID"]
+                    date = reservation["date"]
+                    date_str = date.strftime("%Y-%m-%d")
+                    time = reservation["time"]
+                    price = reservation["price"]
+
+                    cursor.execute("SELECT name , address , images FROM travel WHERE id = %s",(attraction_id ,))
+                    travel = cursor.fetchone()
+                    name = travel["name"]
+                    address = travel["address"]
+                    images = travel["images"]
+                    image = images.split(",")[0]
+                    
+
+                    return ({ "data" :{ "attraction" :{"id":attraction_id,"name":name,"address":address,"images":image}},"date":date_str,"time":time,"price":price})
+                else:
+                    return ({"data":None})
+            else:
+                return ({"error":True,"message":"未登入系統！！"}),403
+            
+        elif request.method == "POST" :
+            auth_header = request.headers.get('Authorization')
+            print(auth_header)
+            reservation=request.get_json()
+            attractionId=reservation["attractionId"]
+            date=reservation["date"]
+            time=reservation["time"]
+            price=reservation["price"]
+
+
+            if not auth_header:
+                return jsonify({"error":True,"message":"未登入系統"}),403
+            elif not date:
+                return jsonify({"error":True,"message":"日期不可為空"}),400
+            
+            
+            token = auth_header.split("Bearer ")[1]
+            decoded = jwt.decode(token,secret_key,algorithms=["HS256"])
+            user_id=decoded["data"]["id"]
+
+            cursor.execute('SELECT id FROM member WHERE id = %s' , (user_id ,))
+            member_id = cursor.fetchone()["id"]
+
+            cursor.execute("SELECT * FROM reservation WHERE memberID = %s ", (member_id, ))
+            existing_reservation = cursor.fetchone()
+            print("existing",existing_reservation)
+            cursor.close()
+
+            cursor = conn.cursor(dictionary=True)
+            if existing_reservation: 
+                    cursor.execute("UPDATE reservation SET date=%s, time=%s, price=%s,attractionID=%s WHERE id = %s",
+                    (date, time, price,attractionId, existing_reservation["id"]))
+            else:
+                    cursor.execute("INSERT INTO reservation (date, time, price,attractionID, memberID) VALUES (%s, %s, %s, %s, %s)",(date, time, price,attractionId,member_id))
+
+            conn.commit()
+            print(cursor.rowcount,"was update")
+            return{"ok":True}
+            
+
+        elif request.method =="DELETE":
+            auth_header = request.headers.get('Authorization')
+            if not auth_header:
+                return jsonify({"error": True, "message": "未登入系統"}), 403
+            try:
+                token = auth_header.split("Bearer ")[1]
+                decoded = jwt.decode(token,secret_key,algorithms=["HS256"])
+                user_id = decoded["data"]["id"]
+                print("User ID:", user_id)
+            
+                try:
+                    cursor.execute("DELETE FROM reservation WHERE memberID = %s",(user_id,))
+                    conn.commit()
+                    return{"ok":True}
+                except Exception as e:
+                    print(e) 
+                    return jsonify({"error": True, "message": "伺服器錯誤"}), 500
+            except:
+                return jsonify({"error": "令牌失效"}),403
+
+    finally:
+        conn.close()
+        cursor.close()
+
      
 
 

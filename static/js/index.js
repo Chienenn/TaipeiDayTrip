@@ -58,6 +58,17 @@ loginSignup.addEventListener('click', () => {
   }
 });
 
+const reservation = document.querySelector('.reservation');
+reservation.addEventListener('click', () => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    window.location.href = '/booking';
+  } else {
+    document.querySelector('.dialog-mask').style.display = 'flex';
+  }
+});
+
 function clearInput() {
   document.querySelector('#name').value = '';
   document.querySelector('#email').value = '';
