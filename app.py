@@ -350,9 +350,9 @@ def orders():
         date = order["order"]["trip"]["date"]
         time = order["order"]["trip"]["time"]
         price = order["order"]["price"]
-        datetime = datetime.now()
+        current_time = datetime.now()
         #訂單編號 20231003021000
-        order_number = datetime.strftime("%Y%m%d%H%M%S")
+        order_number = current_time.strftime("%Y%m%d%H%M%S")
      
         token = auth_header.split("Bearer ")[1]
         decoded = jwt.decode(token,secret_key,algorithms=["HS256"])
