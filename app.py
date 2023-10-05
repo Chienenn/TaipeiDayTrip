@@ -18,38 +18,7 @@ app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 secret_key = "secret_key"
 
-def get_secrets():
-    secret_name = "api/key"
-    region_name = "ap-southeast-2"
 
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
-
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-        secret_value = get_secret_value_response['SecretString']
-        secrets = json.loads(secret_value) 
-
-        return secrets
-    except ClientError as e:
-        print(f" {secret_name}: {str(e)}")
-        return None
-
-
-secrets = get_secrets()
-
-if secrets:
-    partney_key = secrets.get("partney_key")
-    merchant_id = secrets.get("merchant_id")
-    x_api_key = secrets.get("x_api_key")
-
-else:
-    print("can not get secrets")
 
 
 # Pages
@@ -72,35 +41,11 @@ def booking():
 def thankyou():
     return render_template("thankyou.html")
 
-def get_secrets():
-    secret_names = ["api/partney_key", "api/merchant_id", "api/x_api_key"]
-    region_name = "ap-southeast-2"
+import boto3
+from botocore.exceptions import ClientError
 
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
 
-    secrets = {}
-    
-    for secret_name in secret_names:
-        try:
-            get_secret_value_response = client.get_secret_value(
-                SecretId=secret_name
-            )
-            secret_value = get_secret_value_response['SecretString']
-            secrets[secret_name] = secret_value
-        except ClientError as e:
-            print(f"{secret_name}: {str(e)}")
 
-    return secrets
-
-secrets = get_secrets()
-
-partney_key = secrets["api/partney_key"]
-merchant_id = secrets["api/merchant_id"]
-x_api_key = secrets["api/x_api_key"]
 
 @app.route("/api/attractions")
 def get_attractions():
@@ -421,6 +366,19 @@ def orders():
         conn.commit()
 
         #tappay
+        secret_name = "api/key"
+        region_name = "ap-southeast-2"
+        session = boto3.session.Session()
+        secrets_manager_client = session.client(service_name='secretsmanager', region_name=region_name)
+        get_secret_value_response = secrets_manager_client.get_secret_value(SecretId=secret_name)
+        
+        secret = json.loads(get_secret_value_response['SecretString'])
+        
+
+        partney_key = secret["partney_key"]
+        merchant_id = secret["merchant_id"]
+        x_api_key = secret["x_api_key"]
+
         
         tap_pay = {
             "prime":prime,
