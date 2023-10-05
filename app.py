@@ -16,7 +16,7 @@ app.config["JSON_AS_ASCII"] = False
 app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 secret_key = "secret_key"
-client = boto3.client('secretsmanager')
+client = boto3.client('s3', region_name='ap-southeast-2')
 partney_key_secret_name = "partney_key"
 merchant_id_secret_name = "merchant_id"
 x_api_key_secret_name = "x_api_key"
