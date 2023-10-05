@@ -16,14 +16,18 @@ app.config["JSON_AS_ASCII"] = False
 app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 secret_key = "secret_key"
-client = boto3.client('s3', region_name='ap-southeast-2')
+
+s3_client = boto3.client('s3', region_name='ap-southeast-2')
+secrets_manager_client = boto3.client('secretsmanager', region_name='ap-southeast-2')
+
+
 partney_key_secret_name = "partney_key"
 merchant_id_secret_name = "merchant_id"
 x_api_key_secret_name = "x_api_key"
 
-partney_key_response = client.get_secret_value(SecretId=partney_key_secret_name)
-merchant_id_response = client.get_secret_value(SecretId=merchant_id_secret_name)
-x_api_key_response = client.get_secret_value(SecretId=x_api_key_secret_name)
+partney_key_response = secrets_manager_client.get_secret_value(SecretId=partney_key_secret_name)
+merchant_id_response = secrets_manager_client.get_secret_value(SecretId=merchant_id_secret_name)
+x_api_key_response = secrets_manager_client.get_secret_value(SecretId=x_api_key_secret_name)
 
 partney_key = partney_key_response['SecretString']
 merchant_id = merchant_id_response['SecretString']
