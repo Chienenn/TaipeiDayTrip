@@ -247,9 +247,6 @@ body {
   .address {
     line-height: 34px;
   }
-  .empty {
-    margin-left: 3.5%;
-  }
 }
 
 @media (max-width: 600px) {

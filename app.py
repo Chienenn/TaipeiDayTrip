@@ -362,7 +362,7 @@ def orders():
         cursor.execute("INSERT INTO orders (order_number,status,member_id ,contact_name,contact_email,contact_phone) VALUES(%s,%s,%s, %s,%s,%s)",(order_number , "未付款" , user_id , name , email , phone))
         conn.commit()
 
-        cursor.execute("INSERT INTO order_trip (order_number,member_id,attractionId,date,time,price) VALUES (%s,%s,%s,%s,%s,%s)",(order_number,user_id, attractionId, date, time, price))
+        cursor.execute("INSERT INTO order_travel (order_number,member_id,attractionId,date,time,price) VALUES (%s,%s,%s,%s,%s,%s)",(order_number,user_id, attractionId, date, time, price))
         conn.commit()
 
         # tappay
@@ -376,12 +376,12 @@ def orders():
             raise e
         
         secret = json.loads(get_secret_value_response['SecretString'])
-        print(secret)
         
 
         partney_key = secret["partney_key"]
         merchant_id = secret["merchant_id"]
         x_api_key = secret["x_api_key"]
+
         
         tap_pay = {
             "prime":prime,
@@ -453,10 +453,11 @@ def orderNumber(orderNumber):
         if auth_header:
             cursor.execute("SELECT * FROM orders WHERE order_number=%s",(orderNumber,))
             orders=cursor.fetchall()
+
             member_id=orders[0]["member_id"]
-            cursor.execute("SELECT * FROM order_trip WHERE member_id=%s",(member_id,))
-            order_trip=cursor.fetchone()
-            attractionId=order_trip["attractionId"]
+            cursor.execute("SELECT * FROM order_travel WHERE member_id=%s",(member_id,))
+            order_travel=cursor.fetchone()
+            attractionId=order_travel["attractionId"]
             cursor.execute("SELECT * FROM travel WHERE id=%s",(attractionId,))
             data=cursor.fetchall()
             data[0]["images"] = data[0]["images"].split(",")
@@ -464,7 +465,7 @@ def orderNumber(orderNumber):
 
             return jsonify({"data": {
 								"number": orderNumber,
-								"price": order_trip["price"],
+								"price": order_travel["price"],
 								"trip": {
 									"attraction": {
 									"id": attractionId,
@@ -472,8 +473,8 @@ def orderNumber(orderNumber):
 									"address": data[0]["address"],
 									"image": data[0]["images"][0]
 								},
-									"date": order_trip["date"],
-									"time": order_trip["time"]
+									"date": order_travel["date"],
+									"time": order_travel["time"]
 								},
 								"contact": {
 									"name": orders[0]["contact_name"],
@@ -489,8 +490,13 @@ def orderNumber(orderNumber):
                         "message": "未登入系統"
                         }) , 403
 
-    except:
-        return jsonify({"error":True,"message":"伺服器錯誤"}),500
+    except Exception as e:
+        error_message = str(e) 
+        print(error_message) 
+        return jsonify({
+            "error": True,
+            "message": "伺服器錯誤：" + error_message  
+        }), 500
     
     finally:
         conn.close()

@@ -20,15 +20,19 @@ window.addEventListener('load', function () {
       return response.json();
     })
     .then(function (data) {
-      // console.log(data)
+      console.log(data);
       if (data.data !== null) {
         const result = document.querySelector('.result');
         result.textContent = '成功 !';
+        const url = location.href.split('=');
+        const orderNumber = url[1];
         const order_number = document.querySelector('.order_number');
-        order_number.textContent = data.data.number;
+        order_number.textContent = orderNumber;
       } else {
         const result = document.querySelector('.result');
         result.textContent = '失敗! 請保存此訂單編號詢問';
+        const order_number = document.querySelector('.order_number');
+        order_number.textContent = orderNumber;
         document.querySelector('.notice').style.display = 'none';
         document.querySelector('.headlin2').style.display = 'none';
       }
