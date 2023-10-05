@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taipei Trip 台北一日遊</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/thankyou.css">
+    <style>@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap);</style>
+  </head>
+  
+  <body>
+    <header>
+    <div class="nav">
+      <div class="nav-bar">
+        <button class="titleLeft" onclick="window.location.href='http://3.106.73.167:3000/'">台北一日遊</button>
+      <div class="titleRight">
+        <button class="reservation" id="reserve-btn">預定行程 &nbsp;&nbsp;&nbsp;</button>
+        <button class="login" id="login-signup" >登入 / 註冊 </button>
+      </div>
+      </div>
+      </div>  
+    </div>
+    
+    <div class="dialog-mask" style="display:none;">
+      <div class="dialog-signup" style="display:none;">
+        <div class="decorator-bar"></div>
+        <div class="dialog-signup-main">
+          <txt class="dialog-title">
+            註冊會員帳號
+          </txt>
+          <img class="icon-signup-close" src="../static/pic/icon_close.png"/>
+          <input class="dialog-input" id="name" type="text" name="name" placeholder="輸入姓名" required/>
+          <input class="dialog-input" id="email" type="text" name="email" placeholder="輸入電子郵件" required/>
+          <input class="dialog-input" id="password" type="password" name="password" placeholder="輸入密碼" required/>
+          <button class="signup-btn">註冊帳戶</button>
+          <txt class="notice-signup"></txt>
+          <txt class="notice-alert"></txt>
+          <button class="switch-login">已經有帳戶了？點此登入</button>
+        </div>
+      </div>
+
+      <div class="dialog-login">
+        <div class="decorator-bar"></div>
+        <div class="dialog-login-main">
+          <txt class="dialog-title">
+              登入會員帳號
+          </txt>
+          <img class="icon-login-close" src="../static/pic/icon_close.png"/>
+          <input class="dialog-input" id="email-login" type="text" name="email" placeholder="輸入電子郵件" required/>
+          <input class="dialog-input" id="password-login" type="password" name="password" placeholder="輸入密碼" required/>
+          <button class="login-btn">登入帳戶</button>
+          <txt class="notice-login"></txt>
+          <button class="switch-signup">還沒有帳戶？點此註冊</button>
+      </div>
+      </div>
+    </div> <!--background-->
+    <div class="background-img "></div>
+    </header>
+<main>
+<div class="main-page">
+<div class="content">
+    
+<txt class="headline">行程預定<txt class="result"></txt></txt>
+    
+<txt class="headlin2">您的訂單編號如下</txt>
+</br>
+</br>
+<div class="order_number"></div>
+</br>
+</br>
+<txt class="notice">請記住此編號，或到會員中心查詢歷史訂單</txt>
+</div>
+</div>
+</main>
+<footer id="footer">
+    <div id="footer-div">COPYRIGHT © 2023 台北一日遊</div>
+</footer>
+<script src="../static/js/thankyou.js"></script>
+  </body>
+</html>

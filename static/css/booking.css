@@ -140,7 +140,6 @@ body {
 }
 .empty {
   margin-top: 40px;
-  margin-left: 110px;
 }
 .member-info,
 .credit-info {
@@ -151,11 +150,21 @@ body {
 .info-name,
 .info-mail,
 .info-phone,
-.credit-num,
+/* .credit-num, */
 .info-txt {
   font-size: 16px;
   font-weight: 700;
   line-height: 40px;
+}
+.tpfield {
+  height: 38px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 15px;
+  margin-bottom: 10px;
+  margin-left: 8px;
+  font-size: 16px;
 }
 .dialog-input {
   height: 38px;
@@ -190,6 +199,17 @@ body {
 .con {
   width: 980px;
   margin: 0 auto;
+}
+.payment {
+  display: flex;
+}
+.contact-notice {
+  color: red;
+  margin-left: 20px;
+}
+.info-phone {
+  display: flex;
+  padding-right: 10px;
 }
 
 @media (max-width: 1200px) {
