@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import requests
 import boto3
+from botocore.exceptions import ClientError
 load_dotenv()
 
 
@@ -17,21 +18,38 @@ app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 secret_key = "secret_key"
 
-s3_client = boto3.client('s3', region_name='ap-southeast-2')
-secrets_manager_client = boto3.client('secretsmanager', region_name='ap-southeast-2')
+def get_secrets():
+    secret_name = "api/key"
+    region_name = "ap-southeast-2"
+
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+        secret_value = get_secret_value_response['SecretString']
+        secrets = json.loads(secret_value) 
+
+        return secrets
+    except ClientError as e:
+        print(f" {secret_name}: {str(e)}")
+        return None
 
 
-partney_key_secret_name = "partney_key"
-merchant_id_secret_name = "merchant_id"
-x_api_key_secret_name = "x_api_key"
+secrets = get_secrets()
 
-partney_key_response = secrets_manager_client.get_secret_value(SecretId=partney_key_secret_name)
-merchant_id_response = secrets_manager_client.get_secret_value(SecretId=merchant_id_secret_name)
-x_api_key_response = secrets_manager_client.get_secret_value(SecretId=x_api_key_secret_name)
+if secrets:
+    partney_key = secrets.get("partney_key")
+    merchant_id = secrets.get("merchant_id")
+    x_api_key = secrets.get("x_api_key")
 
-partney_key = partney_key_response['SecretString']
-merchant_id = merchant_id_response['SecretString']
-x_api_key = x_api_key_response['SecretString']
+else:
+    print("can not get secrets")
 
 
 # Pages
@@ -54,6 +72,35 @@ def booking():
 def thankyou():
     return render_template("thankyou.html")
 
+def get_secrets():
+    secret_names = ["api/partney_key", "api/merchant_id", "api/x_api_key"]
+    region_name = "ap-southeast-2"
+
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    secrets = {}
+    
+    for secret_name in secret_names:
+        try:
+            get_secret_value_response = client.get_secret_value(
+                SecretId=secret_name
+            )
+            secret_value = get_secret_value_response['SecretString']
+            secrets[secret_name] = secret_value
+        except ClientError as e:
+            print(f"{secret_name}: {str(e)}")
+
+    return secrets
+
+secrets = get_secrets()
+
+partney_key = secrets["api/partney_key"]
+merchant_id = secrets["api/merchant_id"]
+x_api_key = secrets["api/x_api_key"]
 
 @app.route("/api/attractions")
 def get_attractions():
@@ -486,6 +533,8 @@ def orderNumber(orderNumber):
     finally:
         conn.close()
         cursor.close()
+
+
     
 
 if __name__ == "__main__":
