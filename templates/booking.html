@@ -6,13 +6,14 @@
     <title>Taipei Trip 台北一日遊</title>
     <link rel="stylesheet" type="text/css" href="../static/css/booking.css">
     <style>@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap);</style>
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
   </head>
   
   <body>
     <header>
     <div class="nav">
       <div class="nav-bar">
-      <button class="titleLeft" onclick="window.location.href='http://3.106.73.167:3000/'">台北一日遊</button>
+      <button class="titleLeft" onclick="window.location.href='http://13.55.45.225:3000/'">台北一日遊</button>
       <div class="titleRight">
         <button class="reservation" id="reserve-btn">預定行程 &nbsp;&nbsp;&nbsp;</button>
         <button class="login" id="login-signup" >登入 / 註冊</button>
@@ -45,7 +46,9 @@
     <div class="content">
         <div class="con">
         <div class="reserve-title">
+            <div class="attid" style="display:none"></div>
             <txt class="headline">您好，&nbsp;<txt class="name"></txt>，待預定的行程如下：</txt>
+            <div class="empty"></div>
         </div>
         <div class="section">
             <img class="img" alt="img">
@@ -75,20 +78,26 @@
     </br>
         <txt class="info-mail">聯絡信箱：<input class="dialog-input" id="mail" type="text" name="mail" placeholder="輸入信箱" required/></txt>
     </br>
-        <txt class="info-phone">手機號碼：<input class="dialog-input" id="phone" type="text" name="phone" placeholder="輸入手機號碼" required/></txt>
+        <txt class="info-phone">手機號碼：<input class="dialog-input" id="phone" type="text" name="phone" placeholder="輸入手機號碼" required/><div class = "contact-notice"></div></txt>
     </br>
         <txt class="info-txt">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</txt>
+        
     </div>
 
     <div class="solid1"></div>
     <div class="credit-info">
         <txt class="credit-title">信用卡付款資訊</txt>
     </br>
-        <txt class="credit-num">卡片號碼：<input class="dialog-input" type="text" placeholder="**** **** **** ****" required/></txt>
-    </br>
-        <txt class="credit-num">過期時間：<input class="dialog-input" type="text"  placeholder="MM / YY" required/></txt>
-    </br>
-        <txt class="credit-num">驗證密碼：<input class="dialog-input" type="text"  placeholder="CVV" required/></txt>
+    <div class="payment">
+        卡片號碼：<div class="tpfield"  id="card-number" ></div>
+    </div>
+    <div class="payment">
+        過期時間：
+        <div class="tpfield"  id="card-expiration-date" ></div>
+    </div>
+    <div class="payment">
+        驗證密碼：
+        <div class="tpfield"  id="card-ccv" ></div>
     </div>
     <div class="solid2"></div>
 
@@ -99,12 +108,15 @@
     
     <div class="empty"></div>
 </div>
+
 </div>
 </main>
 <footer id="footer">
     <div id="footer-div">COPYRIGHT © 2023 台北一日遊</div>
 </footer>
 <script src="../static/js/booking.js"></script>
+
+
   </body>
 </html>
 

@@ -1,11 +1,14 @@
 from flask import jsonify, render_template, Flask, request,redirect
 import json
 import jwt
+import datetime
 from dbpool import pool
 import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-
+import requests
+import boto3
+from botocore.exceptions import ClientError
 load_dotenv()
 
 
@@ -14,6 +17,8 @@ app.config["JSON_AS_ASCII"] = False
 app.json.ensure_ascii = False  # 解碼
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 secret_key = "secret_key"
+
+
 
 
 # Pages
@@ -35,6 +40,11 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     return render_template("thankyou.html")
+
+import boto3
+from botocore.exceptions import ClientError
+
+
 
 
 @app.route("/api/attractions")
@@ -261,6 +271,7 @@ def resveration():
             auth_header = request.headers.get('Authorization')
             print(auth_header)
             reservation=request.get_json()
+            print(reservation)
             attractionId=reservation["attractionId"]
             date=reservation["date"]
             time=reservation["time"]
@@ -321,8 +332,179 @@ def resveration():
         conn.close()
         cursor.close()
 
-     
+@app.route("/api/orders",methods=["POST"])
+def orders():
+    try:
+        conn = pool.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        auth_header = request.headers.get('Authorization')
+        order = request.get_json()
 
+        name = order["order"]["contact"]["name"]
+        email = order["order"]["contact"]["email"]
+        phone = order["order"]["contact"]["phone"]
+        prime = order["prime"]
+        
+        attractionId=order["order"]["trip"]["attraction"]["id"]
+
+        date = order["order"]["trip"]["date"]
+        time = order["order"]["trip"]["time"]
+        price = order["order"]["price"]
+        current_time = datetime.now()
+        #訂單編號 20231003021000
+        order_number = current_time.strftime("%Y%m%d%H%M%S")
+     
+        token = auth_header.split("Bearer ")[1]
+        decoded = jwt.decode(token,secret_key,algorithms=["HS256"])
+        user_id = decoded["data"]["id"]
+        # print("user",user_id)
+
+        cursor.execute("INSERT INTO orders (order_number,status,member_id ,contact_name,contact_email,contact_phone) VALUES(%s,%s,%s, %s,%s,%s)",(order_number , "未付款" , user_id , name , email , phone))
+        conn.commit()
+
+        cursor.execute("INSERT INTO order_travel (order_number,member_id,attractionId,date,time,price) VALUES (%s,%s,%s,%s,%s,%s)",(order_number,user_id, attractionId, date, time, price))
+        conn.commit()
+
+        # tappay
+        secret_name = "api/key"
+        region_name = "ap-southeast-2"
+        session = boto3.session.Session()
+        secrets_manager_client = session.client(service_name='secretsmanager', region_name=region_name)
+        try:
+            get_secret_value_response = secrets_manager_client.get_secret_value(SecretId=secret_name)
+        except ClientError as e:
+            raise e
+        
+        secret = json.loads(get_secret_value_response['SecretString'])
+        
+
+        partney_key = secret["partney_key"]
+        merchant_id = secret["merchant_id"]
+        x_api_key = secret["x_api_key"]
+
+        
+        tap_pay = {
+            "prime":prime,
+            "partner_key":partney_key,
+            "merchant_id":merchant_id,
+            "details":"TapPay Test",
+            "amount":order["order"]["price"],
+            "cardholder":{
+                "phone_number":order["order"]["contact"]["phone"],
+                "name":order["order"]["contact"]["name"],
+                "email":order["order"]["contact"]["email"],
+                },
+                "remember":True
+            
+            }
+        test_url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+        headers = {
+                "Content-Type": "application/json",
+                "x-api-key": x_api_key
+                }
+        response = requests.post(test_url, json=tap_pay , headers=headers)
+        print("response",response)
+
+        if response.status_code == 200:
+			# 交易成功
+            cursor.execute("UPDATE orders SET status = '已付款' WHERE member_id = %s" , (user_id ,))
+            conn.commit()
+            cursor.execute("DELETE FROM reservation WHERE memberID = %s",(user_id,))
+            conn.commit()
+   
+            return ({
+					"data": {
+							"number": order_number,
+							"payment": {
+								"status": 0,
+								"message": "付款成功"
+							}
+						    }
+					})
+        elif response.status_code == 400 :
+            return ({
+					"error": True,
+					"message": "付款未成功，訂單建立失敗。",
+					"number": order_number
+					}) , 400
+        else:
+            return	({
+					"error": True,
+					"message": "未登入系統，拒絕存取"
+					}) , 403
+       
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"error":True,"message":"伺服器錯誤"}),500
+    
+    finally:
+        conn.close()
+        cursor.close()
+
+
+@app.route("/api/order/<orderNumber>")
+def orderNumber(orderNumber):
+    try:
+        conn = pool.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        auth_header = request.headers.get('Authorization')
+        print(auth_header)
+        if auth_header:
+            cursor.execute("SELECT * FROM orders WHERE order_number=%s",(orderNumber,))
+            orders=cursor.fetchall()
+
+            member_id=orders[0]["member_id"]
+            cursor.execute("SELECT * FROM order_travel WHERE member_id=%s",(member_id,))
+            order_travel=cursor.fetchone()
+            attractionId=order_travel["attractionId"]
+            cursor.execute("SELECT * FROM travel WHERE id=%s",(attractionId,))
+            data=cursor.fetchall()
+            data[0]["images"] = data[0]["images"].split(",")
+
+
+            return jsonify({"data": {
+								"number": orderNumber,
+								"price": order_travel["price"],
+								"trip": {
+									"attraction": {
+									"id": attractionId,
+									"name": data[0]["name"],
+									"address": data[0]["address"],
+									"image": data[0]["images"][0]
+								},
+									"date": order_travel["date"],
+									"time": order_travel["time"]
+								},
+								"contact": {
+									"name": orders[0]["contact_name"],
+									"email": orders[0]["contact_email"],
+									"phone": orders[0]["contact_phone"]
+								},
+								"status": 1
+							}
+							})
+        else:
+            return	({
+                        "error": True,
+                        "message": "未登入系統"
+                        }) , 403
+
+    except Exception as e:
+        error_message = str(e) 
+        print(error_message) 
+        return jsonify({
+            "error": True,
+            "message": "伺服器錯誤：" + error_message  
+        }), 500
+    
+    finally:
+        conn.close()
+        cursor.close()
+
+
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
