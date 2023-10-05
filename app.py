@@ -370,9 +370,13 @@ def orders():
         region_name = "ap-southeast-2"
         session = boto3.session.Session()
         secrets_manager_client = session.client(service_name='secretsmanager', region_name=region_name)
-        get_secret_value_response = secrets_manager_client.get_secret_value(SecretId=secret_name)
+        try:
+            get_secret_value_response = secrets_manager_client.get_secret_value(SecretId=secret_name)
+        except ClientError as e:
+            raise e
         
         secret = json.loads(get_secret_value_response['SecretString'])
+        print(secret)
         
 
         partney_key = secret["partney_key"]
@@ -400,6 +404,7 @@ def orders():
                 "x-api-key": x_api_key
                 }
         response = requests.post(test_url, json=tap_pay , headers=headers)
+        print("response",response)
 
         if response.status_code == 200:
 			# 交易成功
