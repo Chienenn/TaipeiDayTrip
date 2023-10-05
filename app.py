@@ -365,7 +365,7 @@ def orders():
         cursor.execute("INSERT INTO order_trip (order_number,member_id,attractionId,date,time,price) VALUES (%s,%s,%s,%s,%s,%s)",(order_number,user_id, attractionId, date, time, price))
         conn.commit()
 
-        #tappay
+        # tappay
         secret_name = "api/key"
         region_name = "ap-southeast-2"
         session = boto3.session.Session()
@@ -382,7 +382,6 @@ def orders():
         partney_key = secret["partney_key"]
         merchant_id = secret["merchant_id"]
         x_api_key = secret["x_api_key"]
-
         
         tap_pay = {
             "prime":prime,

@@ -335,11 +335,13 @@ submitButton.addEventListener(
         }),
       })
         .then(function (response) {
-          response.json();
+          return response.json();
         })
         .then(function (data) {
           if (data.data.payment.status === 0) {
+            console.log('data', data);
             const orderNumber = data.data.number;
+            console.log('order num', orderNumber);
             window.location.href = `/thankyou?number=${orderNumber}`;
           } else {
             const orderNumber = data.data.number;
